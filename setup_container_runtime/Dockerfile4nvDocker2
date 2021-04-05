@@ -1,0 +1,36 @@
+# Reference:
+# Docker Tutorial 5: Nvidia-Docker 2.0 Installation in Ubuntu 18.04: https://sh-tsang.medium.com/docker-tutorial-5-nvidia-docker-2-0-installation-in-ubuntu-18-04-cb80f17cac65
+# Install nvidia-docker per https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+# UR5 Robot Simulation w/ Gazebo & Moveit: https://www.youtube.com/watch?v=ayp87SjrwPc
+
+FROM koenlek/ros-nvidia:kinetic-desktop-full
+# Install glvnd + opengl libraries
+# They don't come over apt for Ubuntu 16.04, so we just grab them from another img
+COPY --from=nvidia/opengl:1.1-glvnd-runtime-ubuntu16.04 \
+  /usr/local/lib/x86_64-linux-gnu \
+  /usr/local/lib/x86_64-linux-gnu
+
+RUN echo '/usr/local/lib/x86_64-linux-gnu' >> /etc/ld.so.conf.d/glvnd.conf && \
+    ldconfig
+
+# RUN echo 'Acquire::http::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf && \
+#     echo 'Acquire::https::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf && \
+RUN apt-get update && apt-get install -y vim cmake \
+            ros-kinetic-moveit \
+            ros-kinetic-control-toolbox \
+            ros-kinetic-joint-state-publisher-gui \
+            ros-kinetic-ros-control \
+            ros-kinetic-gazebo-ros-control \
+            ros-kinetic-ros-controllers \
+            ros-kinetic-joint-state-controller \
+            ros-kinetic-effort-controllers \
+            ros-kinetic-position-controllers \
+            unzip
+
+# Set up env variables to enable nvidia for opengl
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:-all}
+
+CMD ["/bin/bash"]
