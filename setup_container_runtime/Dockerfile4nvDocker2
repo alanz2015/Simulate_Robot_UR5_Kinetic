@@ -4,6 +4,8 @@
 # UR5 Robot Simulation w/ Gazebo & Moveit: https://www.youtube.com/watch?v=ayp87SjrwPc
 
 FROM koenlek/ros-nvidia:kinetic-desktop-full
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 # Install glvnd + opengl libraries
 # They don't come over apt for Ubuntu 16.04, so we just grab them from another img
 COPY --from=nvidia/opengl:1.1-glvnd-runtime-ubuntu16.04 \
@@ -13,8 +15,9 @@ COPY --from=nvidia/opengl:1.1-glvnd-runtime-ubuntu16.04 \
 RUN echo '/usr/local/lib/x86_64-linux-gnu' >> /etc/ld.so.conf.d/glvnd.conf && \
     ldconfig
 
-# RUN echo 'Acquire::http::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf && \
-#     echo 'Acquire::https::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf && \
+RUN echo 'Acquire::http::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf && \
+    echo 'Acquire::https::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf
+
 RUN apt-get update && apt-get install -y vim cmake \
             ros-kinetic-moveit \
             ros-kinetic-control-toolbox \
