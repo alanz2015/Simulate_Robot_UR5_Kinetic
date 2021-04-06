@@ -1,7 +1,6 @@
 # Reference:
 # Docker Tutorial 5: Nvidia-Docker 2.0 Installation in Ubuntu 18.04: https://sh-tsang.medium.com/docker-tutorial-5-nvidia-docker-2-0-installation-in-ubuntu-18-04-cb80f17cac65
 # Install nvidia-docker per https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
-# UR5 Robot Simulation w/ Gazebo & Moveit: https://www.youtube.com/watch?v=ayp87SjrwPc
 
 FROM koenlek/ros-nvidia:kinetic-desktop-full
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
@@ -15,8 +14,8 @@ COPY --from=nvidia/opengl:1.1-glvnd-runtime-ubuntu16.04 \
 RUN echo '/usr/local/lib/x86_64-linux-gnu' >> /etc/ld.so.conf.d/glvnd.conf && \
     ldconfig
 
-RUN echo 'Acquire::http::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf && \
-    echo 'Acquire::https::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf
+RUN echo 'Acquire::http::proxy "http://xxxx.xxxx.xxxx.xxx:xxx";' >> /etc/apt/apt.conf && \
+    echo 'Acquire::https::proxy "http://xxxx.xxxx.xxxx.xxxx:xxx";' >> /etc/apt/apt.conf
 
 RUN apt-get update && apt-get install -y vim cmake \
             ros-kinetic-moveit \
