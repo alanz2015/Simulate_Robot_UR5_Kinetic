@@ -13,8 +13,8 @@ COPY --from=nvidia/opengl:1.1-glvnd-runtime-ubuntu16.04 \
 RUN echo '/usr/local/lib/x86_64-linux-gnu' >> /etc/ld.so.conf.d/glvnd.conf && \
     ldconfig
 
-# RUN echo 'Acquire::http::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf && \
-#     echo 'Acquire::https::proxy "http://child-prc.intel.com:913";' >> /etc/apt/apt.conf && \
+# RUN echo 'Acquire::http::proxy "http://xxxx.xxxx.xxxx.xxx:xxx";' >> /etc/apt/apt.conf && \
+#     echo 'Acquire::https::proxy "http://xxxx.xxxx.xxxx.xxxx:xxx";' >> /etc/apt/apt.conf && \
 RUN apt-get update && apt-get install -y vim cmake \
             ros-kinetic-moveit \
             ros-kinetic-control-toolbox \
